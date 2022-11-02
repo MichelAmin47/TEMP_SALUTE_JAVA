@@ -1,0 +1,10 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/openjdk:8u232-browsers
+    steps:
+      - checkout
+      - run: mvn -Dtest=SmokeTest test -f pom.xml
+      - store_test_results:
+          path: target/report
