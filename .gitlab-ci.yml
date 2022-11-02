@@ -1,0 +1,27 @@
+image: docker:stable
+
+stages:
+  - test
+  - publish
+
+services:
+  - docker:dind
+
+before_script:
+  - docker info
+  - apk update
+  - apk upgrade
+  - apk add py-pip python3-dev libffi-dev openssl-dev gcc libc-dev make
+  - pip install docker-compose
+
+test:
+  stage: test
+  script: 
+    - docker-compose up --abort-on-container-exit
+  artifacts:
+    expire_in: 1 month
+    reports:
+      junit:
+        - target/surefire-reports/TEST-*.xml
+        - target/failsafe-reports/TEST-*.xml
+    when: always

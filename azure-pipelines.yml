@@ -1,0 +1,16 @@
+trigger:
+    - master
+    
+    pool:
+      name: 'Ubuntu-16.04'
+    
+    steps:
+    - task: DockerInstaller@0
+        displayName: 'Install Docker 17.09.0-ce'
+    - task: DockerCompose@0
+        displayName: 'Spin up selenium grid and test container and run tests'
+        inputs:
+        action: 'Run services'
+        detached: false
+    - task: PublishTestResults@2
+        displayName: 'Publish Test Results **/TEST-*.xml'
